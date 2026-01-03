@@ -25,3 +25,5 @@
 // 如果你希望它们只是附录或者不带“第X章”，可以在 include 前加 #set heading(numbering: none)
 = 考点速记与真题
 #include "chapters/Fortest/01_definition_review.typ"
+
+#include "chapters/Fortest/02_numerical_characteristics.typ"
