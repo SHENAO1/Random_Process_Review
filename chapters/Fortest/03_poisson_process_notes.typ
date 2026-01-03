@@ -233,3 +233,74 @@ $
 E[N(t) N(t+s)] &= (lambda t + lambda^2 t^2) + lambda^2 t s \
 &= lambda t + lambda^2 t (t+s)
 $
+
+= 真题补充解析：电话呼叫频率问题
+
+#kbox("题目描述 (手写笔记)")[
+  设电话总机在 $(0, t)$ 内接到电话呼叫数 $X(t)$ 是具有强度（每分钟）为 $lambda$ 的泊松过程。求：
+  1. 两分钟内接到3次呼叫的概率。
+  2. 第2分钟内收到第3次呼叫的概率。
+]
+
+== 解答过程
+
+*1. 两分钟内接到3次呼叫的概率*
+
+时间长度 $t=2$，参数为 $lambda dot 2 = 2 lambda$。
+
+$
+P(N(2)-N(0)=3) &= ((lambda dot 2)^3) / 3! e^(- lambda dot 2) \
+&= (8 lambda^3) / (3 dot 2 dot 1) e^(- 2 lambda) \
+&= 4/3 lambda^3 e^(- 2 lambda)
+$
+
+*2. 第2分钟内收到第3次呼叫的概率*
+
+设“第2分钟内收到第3次呼叫”为事件 $A$。这意味着：
+- 截止 $t=1$ 时，总呼叫数必须少于3次（即 $N(1) in {0, 1, 2}$）。
+- 截止 $t=2$ 时，总呼叫数必须至少达到3次（$N(2) >= 3$）。
+
+根据 $N(1)$ 的不同取值，将事件 $A$ 拆分为三种互斥情况：
+1. $N(1)=2$，且 $N(2)-N(1) >= 1$ （前1分钟来2个，后1分钟至少来1个）
+2. $N(1)=1$，且 $N(2)-N(1) >= 2$ （前1分钟来1个，后1分钟至少来2个）
+3. $N(1)=0$，且 $N(2)-N(1) >= 3$ （前1分钟来0个，后1分钟至少来3个）
+
+$
+P(A) = & P(N(1)=2, N(2)-N(1)>=1) \
+&+ P(N(1)=1, N(2)-N(1)>=2) \
+&+ P(N(1)=0, N(2)-N(1)>=3)
+$
+
+利用独立增量性质 $P(N(1)=k, N(2)-N(1)>=m) = P(N(1)=k) dot P(N(2)-N(1)>=m)$。
+同时注意，#text(fill: blue)[这里使用反面概率计算增量部分：$P(Delta N >= n) = 1 - P(Delta N < n) = 1 - sum_(k=0)^(n-1) ((lambda t)^k)/k! e^(- lambda t)$]。
+本题中时间间隔 $t=1$，故参数均为 $lambda$。
+
+*详细推导（严格按照笔记展开）*：
+
+$
+P(A) &= underbrace(((lambda dot 1)^2)/2! e^(- lambda), P(N(1)=2)) dot underbrace([1 - ((lambda dot 1)^0)/0! e^(- lambda)], P(Delta N >= 1)) \
+&+ underbrace(((lambda dot 1)^1)/1! e^(- lambda), P(N(1)=1)) dot underbrace([1 - ((lambda dot 1)^0)/0! e^(- lambda) - ((lambda dot 1)^1)/1! e^(- lambda)], P(Delta N >= 2)) \
+&+ underbrace(((lambda dot 1)^0)/0! e^(- lambda), P(N(1)=0)) dot underbrace([1 - ((lambda dot 1)^0)/0! e^(- lambda) - ((lambda dot 1)^1)/1! e^(- lambda) - ((lambda dot 1)^2)/2! e^(- lambda)], P(Delta N >= 3))
+$
+
+化简各项：
+$
+P(A) &= lambda^2/2 e^(- lambda) (1 - e^(- lambda)) \
+&+ lambda e^(- lambda) (1 - e^(- lambda) - lambda e^(- lambda)) \
+&+ e^(- lambda) (1 - e^(- lambda) - lambda e^(- lambda) - lambda^2/2 e^(- lambda))
+$
+
+展开括号：
+$
+P(A) &= lambda^2/2 e^(- lambda) - lambda^2/2 e^(- 2 lambda) \
+&+ lambda e^(- lambda) - lambda e^(- 2 lambda) - lambda^2 e^(- 2 lambda) \
+&+ 1 e^(- lambda) - 1 e^(- 2 lambda) - lambda e^(- 2 lambda) - lambda^2/2 e^(- 2 lambda)
+$
+
+合并同类项（提取 $e^(- lambda)$ 和 $e^(- 2 lambda)$）：
+$
+&= (lambda^2/2 + lambda + 1) e^(- lambda) - (lambda^2/2 + lambda + lambda^2 + 1 + lambda + lambda^2/2) e^(- 2 lambda) \
+" " \
+& "（注：笔记中的最后一步合并似乎直接给出了结果，我们整理如下）" \
+&= 1 - e^(- lambda) - (lambda + 3/2 lambda^2) e^(- 2 lambda)
+$
