@@ -1,0 +1,9 @@
+# 忽略编译生成的 PDF 文件
+*.pdf
+
+# 忽略操作系统生成的系统文件
+.DS_Store
+Thumbs.db
+
+# 忽略 VS Code 的本地设置（可选）
+.vscode/
