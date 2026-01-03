@@ -27,3 +27,5 @@
 #include "chapters/Fortest/01_definition_review.typ"
 
 #include "chapters/Fortest/02_numerical_characteristics.typ"
+
+#include "chapters/Fortest/03_poisson_process_notes.typ"
